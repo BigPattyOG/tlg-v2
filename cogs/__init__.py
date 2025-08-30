@@ -26,16 +26,28 @@ def load_cog(module_path: str):
 
     meta = getattr(module, "COG_METADATA", None)
     if not meta:
-        # logger.warning("Cog %s has no COG_METADATA, skipping...", module_path)
+        logger.info("Cog %s has no COG_METADATA, skipping...", module_path)
         return None
 
-    is_cog = bool(meta.get("is_cog", False))
-    enabled = bool(meta.get("enabled", True))
+    val = meta.get("is_cog", False)
+    if not isinstance(val, bool):
+        logger.warning("Cog %s has non-boolean is_cog: %r", module_path, val)
+    is_cog = val is True
+
+    val = meta.get("enabled", True)
+    if not isinstance(val, bool):
+        logger.warning("Cog %s has non-boolean enabled: %r", module_path, val)
+    enabled = val is True
+
     name = meta.get("name", module_path)
     description = meta.get("description", "")
     version = meta.get("version", "")
     author = meta.get("author", "")
-    priority = int(meta.get("priority", 0))
+    try:
+        priority = int(meta.get("priority", 0))
+    except (ValueError, TypeError):
+        logger.warning("Invalid priority for cog %s, defaulting to 0", module_path)
+        priority = 0
     commands = meta.get("commands", {})
 
     return {
@@ -53,6 +65,9 @@ def load_cog(module_path: str):
 
 def discover_cogs():
     """Discover and load all cog modules from the cogs directory"""
+    ALL_COGS.clear()
+    COG_MODULES.clear()
+    seen_module_paths = set()
     for file in COG_FOLDER.rglob("*.py"):
         if file.name == "__init__.py":
             if file.parent == COG_FOLDER:
@@ -65,6 +80,11 @@ def discover_cogs():
             relative_parts = list(file.relative_to(COG_FOLDER).with_suffix("").parts)
             module_path = "cogs." + ".".join(relative_parts)
 
+        if module_path in seen_module_paths:
+            logger.critical("Duplicate module path detected: %s (file: %s)", module_path, file)
+            continue
+        seen_module_paths.add(module_path)
+
         logger.debug("Found file: %s -> module_path: %s", file, module_path)
         result = load_cog(module_path)
         if not result:
@@ -75,6 +95,10 @@ def discover_cogs():
 
         if metadata["is_cog"] and metadata["enabled"]:
             COG_MODULES.append(module_path)
+
+    # Sort by priority (desc), then name (asc) for deterministic order
+    ALL_COGS.sort(key=lambda c: (-c.get("priority", 0), c.get("name", "")))
+    COG_MODULES[:] = [c["module"] for c in ALL_COGS if c.get("is_cog") and c.get("enabled", True)]
 
     logger.info("Discovered cogs: %s", [c["name"] for c in ALL_COGS])
     logger.info("Enabled cogs: %s", COG_MODULES)

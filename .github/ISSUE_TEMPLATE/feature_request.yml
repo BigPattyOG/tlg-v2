@@ -1,0 +1,50 @@
+---
+name: Feature Request
+description: Suggest a new feature or improvement
+title: '[FEATURE] '
+labels: enhancement
+assignees: ''
+
+body:
+    - type: markdown
+      attributes:
+          value: |
+              **Thank you for your suggestion!** Please fill out the details below.
+    - type: input
+      id: summary
+      attributes:
+          label: Summary
+          placeholder: Short summary of the feature
+          required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Detailed Description
+          placeholder: Describe the feature in detail
+          required: true
+    - type: dropdown
+      id: team_member
+      attributes:
+          label: Are you part of the TLG team?
+          options:
+              - No
+              - Yes
+          required: true
+    - type: input
+      id: team_name
+      attributes:
+          label: If yes, which team or role?
+          placeholder: e.g., TLG esports / TLG content
+          required: false
+    - type: textarea
+      id: benefit
+      attributes:
+          label: Why this feature is useful
+          placeholder: Explain how this will help the bot or team
+          required: false
+    - type: input
+      id: references
+      attributes:
+          label: Related links / examples (optional)
+          placeholder: e.g., screenshot, documentation, references
+          required: false

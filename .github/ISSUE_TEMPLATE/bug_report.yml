@@ -1,0 +1,62 @@
+---
+name: Bug Report
+description: Report a bug or issue with the bot
+title: '[BUG] '
+labels: bug
+assignees: ''
+
+body:
+    - type: markdown
+      attributes:
+          value: |
+              **Thank you for reporting!** Please fill out the details below.
+    - type: input
+      id: summary
+      attributes:
+          label: Summary
+          placeholder: Short summary of the issue
+          required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Detailed Description
+          placeholder: Describe the issue in detail
+          required: true
+    - type: dropdown
+      id: team_member
+      attributes:
+          label: Are you part of the TLG team?
+          options:
+              - No
+              - Yes
+          required: true
+    - type: input
+      id: team_name
+      attributes:
+          label: If yes, which team or role?
+          placeholder: e.g., TLG esports / TLG content
+          required: false
+    - type: textarea
+      id: steps
+      attributes:
+          label: Steps to Reproduce
+          placeholder: Step-by-step instructions to reproduce the issue
+          required: false
+    - type: textarea
+      id: expected
+      attributes:
+          label: Expected Behavior
+          placeholder: What you expected to happen
+          required: false
+    - type: textarea
+      id: actual
+      attributes:
+          label: Actual Behavior
+          placeholder: What actually happened
+          required: false
+    - type: input
+      id: screenshots
+      attributes:
+          label: Screenshots / Logs (optional)
+          placeholder: Links to screenshots or log files
+          required: false

@@ -1,0 +1,38 @@
+[dependency-groups]
+dev = ["black>=25.1.0", "pre-commit>=4.3.0", "pylint>=3.3.8"]
+
+[project]
+name = "tlg-v2"
+version = "0.1.0"
+description = "Discord Bot for Threat Level Gaming"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "alembic>=1.16.5",
+  "asyncpg>=0.30.0",
+  "discord-py>=2.6.2",
+  "psutil>=7.0.0",
+  "python-dotenv>=1.1.1",
+  "sqlalchemy[asyncio]>=2.0.43"
+]
+authors = [
+  {name = "Patrick", email = "Patrick.Faint@barecoding.com"},
+  {name = "SK", email = "azhu@threatlevel.gg"},
+  {name = "Jo. Adly", email = "youssefadly237@gmail.com"}
+]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["discord", "bot", "tlg", "moderation"]
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.13"
+]
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+
+[tool.setuptools]
+packages = ["core", "cogs", "config", "database"]

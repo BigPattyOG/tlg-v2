@@ -1,0 +1,50 @@
+---
+name: Documentation / Typo
+description: Report a typo or documentation issue
+title: '[DOC] '
+labels: documentation
+assignees: ''
+
+body:
+    - type: markdown
+      attributes:
+          value: |
+              **Please help us improve the documentation!**
+    - type: input
+      id: summary
+      attributes:
+          label: Summary
+          placeholder: Short description of the typo or doc issue
+          required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Detailed Description
+          placeholder: Explain the issue or typo in detail
+          required: true
+    - type: input
+      id: file_section
+      attributes:
+          label: File / Section affected
+          placeholder: Which file or section is affected?
+          required: false
+    - type: input
+      id: suggested_fix
+      attributes:
+          label: Suggested fix (optional)
+          placeholder: How should it be fixed?
+          required: false
+    - type: dropdown
+      id: team_member
+      attributes:
+          label: Are you part of the TLG team?
+          options:
+              - No
+              - Yes
+          required: true
+    - type: input
+      id: team_name
+      attributes:
+          label: If yes, which team or role?
+          placeholder: e.g., TLG esports / TLG content
+          required: false

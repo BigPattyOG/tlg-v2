@@ -28,7 +28,7 @@ def setup_logging() -> logging.Logger:
 
     # Create formatter
     formatter = logging.Formatter(
-        fmt="%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s",
+        fmt="%(asctime)s | %(levelname)-8s | %(name)-20s | %(filename)s:%(lineno)d | %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 

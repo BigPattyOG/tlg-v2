@@ -5,6 +5,7 @@ Main database connection handler with ORM support
 
 from contextlib import asynccontextmanager
 from logging import getLogger
+from re import sub
 from typing import Any, List, Optional
 
 from asyncpg import Pool, Record, create_pool
@@ -45,7 +46,6 @@ class Database:
         try:
             logger.info("Connecting to PostgreSQL database...")
 
-            # Create asyncpg connection pool
             self.pool = await create_pool(
                 settings.database_url,
                 min_size=5,
@@ -53,16 +53,19 @@ class Database:
                 max_queries=50000,
                 max_inactive_connection_lifetime=300,
                 command_timeout=60,
-                server_settings={"jit": "off"},  # Disable JIT for better compatibility
+                server_settings={"jit": "off"},
             )
 
-            # Create SQLAlchemy async engine
-            # Convert postgresql:// to postgresql+asyncpg:// for SQLAlchemy
+            # Remove sslmode from SQLAlchemy connection string if present
             sqlalchemy_url = settings.database_url.replace("postgresql://", "postgresql+asyncpg://")
+            if "sslmode=" in sqlalchemy_url:
+
+                sqlalchemy_url = sub(r"(\?|&)sslmode=[^&]+", "", sqlalchemy_url)
+                sqlalchemy_url = sub(r"\?$", "", sqlalchemy_url)
 
             self.engine = create_async_engine(
                 sqlalchemy_url,
-                echo=False,  # Set to True for SQL query logging
+                echo=False,
                 future=True,
                 pool_size=10,
                 max_overflow=20,

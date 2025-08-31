@@ -28,7 +28,9 @@ def requires_database(func: F) -> F:
             if db is None:
                 await ctx.send("❌ Failed to get database connection")
                 return
-            return await func(self, ctx, *args, db=db, **kwargs)
+            if "db" not in kwargs:
+                kwargs["db"] = db
+            return await func(self, ctx, *args, **kwargs)
         except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error("Database connection error in %s: %s", func.__name__, e)
             await ctx.send(f"❌ Database connection failed: {e}")

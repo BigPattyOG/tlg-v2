@@ -116,7 +116,7 @@ class Dev(commands.Cog):
     @commands.is_owner()
     async def dbtest(self, ctx):
         """Runs a test query on the database."""
-        await database_test(self, ctx, db=self.bot.db)
+        await database_test(self, ctx)
 
     @commands.command(
         name="dbstats",
@@ -126,7 +126,7 @@ class Dev(commands.Cog):
     @commands.is_owner()
     async def dbstats(self, ctx):
         """Shows database statistics and usage info."""
-        await database_stats(self, ctx, db=self.bot.db)
+        await database_stats(self, ctx)
 
 
 async def setup(bot):

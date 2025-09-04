@@ -4,5 +4,6 @@ Database module initialization
 """
 
 from .connection import Database
+from .services import UserService
 
-__all__ = ["Database"]
+__all__ = ["Database", "UserService"]

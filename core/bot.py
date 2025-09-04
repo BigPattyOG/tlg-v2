@@ -81,6 +81,12 @@ class CoreBot(commands.Bot):
             self.db = Database()
             await self.db.connect()
             logger.info("✅ Database initialized successfully")
+            # Create tables after connecting
+            result = await self.db.create_tables()
+            if result.failed:
+                logger.error("❌ Failed to create tables: %s", result.error)
+            else:
+                logger.info("✅ Database tables created")
         except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error("❌ Failed to initialize database: %s", e)
 

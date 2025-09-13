@@ -7,12 +7,12 @@ Dev commands
 from discord.ext import commands
 
 from .alive import alive_command
+from .cog_load import disable_cog, load_cog, reload_cog
 from .dbstats import database_stats
 from .dbtest import database_test
 from .listcogs import list_cogs
 from .loglevel import set_log_level
 from .logs import get_logs
-from .reload import reload_cog
 
 COG_METADATA = {
     "name": "Dev Commands",
@@ -38,7 +38,15 @@ COG_METADATA = {
             "aliases": [],
         },
         "reload": {
-            "help": "RReload a specific cog by module name. (e.g., `cogs.dev`)",
+            "help": "Reload a specific cog by module name. (e.g., `cogs.dev`)",
+            "aliases": [],
+        },
+        "load": {
+            "help": "Load a specific cog by module name. (e.g., `cogs.dev`)",
+            "aliases": [],
+        },
+        "disable": {
+            "help": "Disable/unload a specific cog by module name. (e.g., `cogs.dev`)",
             "aliases": [],
         },
         "dbtest": {
@@ -107,6 +115,26 @@ class Dev(commands.Cog):
     async def reload(self, ctx, cog_name: str):
         """Reloads a specific cog by module name."""
         await reload_cog(self, ctx, cog_name)
+
+    @commands.command(
+        name="load",
+        help=COG_METADATA["commands"]["load"]["help"],
+        hidden=True,
+    )
+    @commands.is_owner()
+    async def load(self, ctx, cog_name: str):
+        """Loads a specific cog by module name."""
+        await load_cog(self, ctx, cog_name)
+
+    @commands.command(
+        name="disable",
+        help=COG_METADATA["commands"]["disable"]["help"],
+        hidden=True,
+    )
+    @commands.is_owner()
+    async def disable(self, ctx, cog_name: str):
+        """Disables/unloads a specific cog by module name."""
+        await disable_cog(self, ctx, cog_name)
 
     @commands.command(
         name="dbtest",
